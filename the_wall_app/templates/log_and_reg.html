@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Login and Registration</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+    </head>
+    <body>
+        {% if messages %}
+            <ul class="messages">    
+            {% for message in messages %}    
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+            {% endfor %}
+            </ul>
+        {% endif %} 
+        <div class ="page">  
+            <h1>Login and Registration</h1>
+            <h2>Existing User? Login!</h2>
+            <form action="/login" method="POST">
+                {% csrf_token %}
+                <p>Email: </p><input type="text" name="email">
+                <p>Password: </p><input type="text" name="password">
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div class ="page">
+            <h2>Registration</h2>
+            <form action="/register" method="POST">
+                {% csrf_token %}
+                <p>First Name: </p><input type="text" name="firstName">
+                <p>Last Name: </p><input type="text" name="lastName">
+                <p>Email: </p><input type="text" name="email">
+                <p>Password: </p><input type="text" name="password">
+                <p>Confrim Password: </p><input type="text" name="confirm_password">
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </body>
+</html>

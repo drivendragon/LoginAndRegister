@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Login and Registration</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+    </head>
+    <body>
+        <h1>Welcome {{user.firstName}} {{user.lastName}} </h1>
+        <a href="logout">Logout</a>
+
+
+    </body>
+</html>
