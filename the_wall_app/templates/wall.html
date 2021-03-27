@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Login and Registration</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">    
+    </head>
+    <body>
+        <h1>Welcome {{user.firstName}} {{user.lastName}} </h1>
+        <h2>Post a new message!</h2>
+        <form action='post_message' method="POST">
+            {% csrf_token %}
+            <input type="text" name="message">
+            <button type="submit">Post Message on Wall</button>
+        </form>
+        <a href="logout">Logout</a>
+        {% for wall_message in wall_messages %}
+            <h2>Message: {{wall_message.message}}</h2>
+            <p>Posted by: {{wall_message.poster.firstName}} {{wall_message.poster.lastName}}</p>
+            <p>Created at: {{wall_message.created_at}}</p>
+            {% if wall_message.poster.id == request.session.user_id %}
+                <form action="/delete_message/{{wall_message.id}}" method="POST">
+                    {% csrf_token %}
+                    <button type=submit>Delete</button>
+                </form>
+            {% endif %}
+            {% for comment in wall_message.wall_message_comments.all %}
+                <h4>Comment: "{{comment.comment}}"</h4>
+                <p>Comment by: {{comment.poster.firstName}} {{comment.poster.lastName}}</p>
+                <p>Created at: {{comment.created_at}}</p>
+            {% endfor %}
+            <form action='/post_comment/{{wall_message.id}}' method="POST">
+            {% csrf_token %}
+            <input type="text" name="comment">
+            <button type="submit">Post Comment on Message</button>
+            </form>
+        {% endfor %}
+
+
+    </body>
+</html>

@@ -27,4 +27,33 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
 
+class MessageManager(models.Manager):
+    def message_validator(self, postData):
+        errors= {}
+        if len(postData['message']) < 1:
+            errors["message"] = "Wall Message must be at least 1 character"
+        return errors
+
+class Wall_Message(models.Model):
+    message = models.CharField(max_length=255)
+    poster = models.ForeignKey(User, related_name="user_messages", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = MessageManager()
+
+class CommentManager(models.Manager):
+    def comment_validator(self, postData):
+        errors= {}
+        if len(postData['comment']) < 1:
+            errors["comment"] = "Comment must be at least 1 character"
+        return errors
+
+class Comment(models.Model):
+    comment = models.CharField(max_length=255)
+    poster = models.ForeignKey(User, related_name="user_comments", on_delete=models.CASCADE)
+    wall_message = models.ForeignKey(Wall_Message, related_name="wall_message_comments", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = CommentManager()
+
 
